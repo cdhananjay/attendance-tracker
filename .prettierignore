@@ -1,0 +1,16 @@
+# Ignore artifacts:
+build
+coverage
+.idea
+node_modules
+.env
+.gitignore
+.prettierignore
+.prettierrc
+design.svg
+drizzle.config.ts
+example.env
+package.json
+package-lock.json
+README.md
+tsconfig.json

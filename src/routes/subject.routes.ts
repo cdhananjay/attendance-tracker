@@ -1,16 +1,20 @@
-import express from "express";
-const subjectRouter = express.Router()
+import express from 'express';
+const subjectRouter = express.Router();
 
-import {createSubject, addSubjectToTimetable, markAttendance,
-    viewAttendance, updateAttendance, deleteSubject,
-    removeSubjectFromTimetable} from "../controllers/subject.controller.js";
+import {
+    getSubjects,
+    createSubject,
+    updateSubject,
+    deleteSubject,
+} from '../controllers/subject.controller.js';
+import requireAuth from '../middlewares/requireAuth.js';
+import requireSubjectName from '../middlewares/requireSubjectName.js';
 
-subjectRouter.post('/create', createSubject);
-subjectRouter.post('/add', addSubjectToTimetable);
-subjectRouter.post('/mark', markAttendance);
-subjectRouter.get('/view', viewAttendance);
-subjectRouter.get('/update', updateAttendance);
-subjectRouter.get('/delete', deleteSubject);
-subjectRouter.get('/delete', removeSubjectFromTimetable);
+// all routes untested
+
+subjectRouter.get('/', requireAuth, getSubjects);
+subjectRouter.post('/', requireAuth, createSubject);
+subjectRouter.patch('/', requireAuth, requireSubjectName, updateSubject);
+subjectRouter.delete('/', requireAuth, requireSubjectName, deleteSubject);
 
 export default subjectRouter;

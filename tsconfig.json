@@ -43,5 +43,6 @@
   "exclude": [
     "drizzle.config.ts",
     "drizzle.config.js"
-  ]
+  ],
+  "include": ["src"]
 }
