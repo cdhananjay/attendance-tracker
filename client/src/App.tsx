@@ -1,16 +1,26 @@
-import { useEffect, useState } from 'react';
+import {Routes, Route} from 'react-router-dom'
+import LoginPage from './pages/LoginPage.tsx'
+import DashboardPage from "@/pages/DashboardPage";
+import RegisterPage from "@/pages/RegisterPage";
+import SubjectsPage from "@/pages/SubjectsPage";
+import TimetablePage from "@/pages/TimetablePage";
+import ManualUpdatePage from "@/pages/ManualUpdatePage";
+import ProtectedRoutes from "@/lib/ProtectedRoutes";
 
 function App() {
-    const [data, setData] = useState('test');
-    useEffect(() => {
-        fetch('/api/sub/')
-            .then((res) => res.json())
-            .then((res) => setData(res.message))
-            .catch((e) => setData(e));
-    }, []);
     return (
         <>
-            <h1 className={'text-gray-400'}>{data}</h1>
+            <Routes>
+                <Route path={"/login"} element={<LoginPage/>} />
+                <Route path={"/register"} element={<RegisterPage/>} />
+                <Route element={<ProtectedRoutes/>} >
+                    <Route path={"/dashboard"} element={<DashboardPage/>} />
+                    <Route path={"/"} element={<DashboardPage/>}/>
+                    <Route path={"/subjects"} element={<SubjectsPage/>} />
+                    <Route path={"/timetable"} element={<TimetablePage/>} />
+                    <Route path={"/manualupdate"} element={<ManualUpdatePage/>} />
+                </Route>
+            </Routes>
         </>
     );
 }

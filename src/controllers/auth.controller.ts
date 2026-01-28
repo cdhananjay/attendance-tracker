@@ -5,6 +5,20 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { eq } from 'drizzle-orm';
 
+export const getCurrentUser = async (req: Request, res: Response) => {
+    if (!(req.cookies.token && req.userId))
+        return res.send({ ok: false, message: 'user not logged in' });
+    try {
+        const [currentUser] = await db.select().from(usersTable).where(eq(usersTable.id, req.userId)).limit(1);
+        if (currentUser) return res.send({ok: true, user: currentUser.username});
+        res.send({ok: false, message: "user does not exist"});
+    } catch (e) {
+        console.log("error getting current user", e);
+        return res.send({ok: false, message: "error getting current user"});
+    }
+};
+
+
 export const register = async (req: Request, res: Response) => {
     if (req.cookies.token)
         return res.send({ ok: false, message: 'user already logged in' });
