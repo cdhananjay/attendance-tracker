@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Navigate, Outlet } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
+import { Spinner } from '@/components/ui/spinner';
 
 const ProtectedRoutes = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
@@ -16,12 +17,17 @@ const ProtectedRoutes = () => {
             }
         })();
     }, []);
-    if (isLoggedIn === null) return <div>Loading...</div>;
+    if (isLoggedIn === null)
+        return (
+            <div className={'flex items-center justify-center'}>
+                {' '}
+                <Spinner />{' '}
+            </div>
+        );
     return isLoggedIn ? (
-        <div>
-            {' '}
-            <Navbar /> <Outlet />{' '}
-        </div>
+        <>
+            <Navbar /> <Outlet />
+        </>
     ) : (
         <Navigate to="/login" />
     );

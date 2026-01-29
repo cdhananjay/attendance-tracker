@@ -35,11 +35,7 @@ const RegisterPage = () => {
         }
     }
     return (
-        <main
-            className={
-                'flex flex-col min-h-screen justify-center items-center gap-10'
-            }
-        >
+        <main className={'flex flex-col justify-center items-center gap-10'}>
             <div className="fixed top-4 right-4">
                 <ThemeToggleButton />
             </div>

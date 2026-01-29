@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import db from '../index.js';
 import { subjectsTable } from '../db/schema.js';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 export const getSubjects = async (req: Request, res: Response) => {
     if (!req.userId)
@@ -27,8 +27,14 @@ export const createSubject = async (req: Request, res: Response) => {
         const [preExistingSubject] = await db
             .select()
             .from(subjectsTable)
-            .where(eq(subjectsTable.userId, req.userId))
+            .where(
+                and(
+                    eq(subjectsTable.userId, req.userId),
+                    eq(subjectsTable.name, req.body.subjectName)
+                )
+            )
             .limit(1);
+        console.log(preExistingSubject);
         if (preExistingSubject)
             return res.send({
                 ok: false,
@@ -36,7 +42,7 @@ export const createSubject = async (req: Request, res: Response) => {
             });
         await db
             .insert(subjectsTable)
-            .values({ name: req.body.name, userId: req.userId });
+            .values({ name: req.body.subjectName, userId: req.userId });
         res.send({ ok: true, message: 'created subject' });
     } catch (error) {
         res.send({ ok: false, message: 'Error creating subject.' });

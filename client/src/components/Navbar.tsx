@@ -35,105 +35,102 @@ const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className={'flex justify-between items-center bg-card px-12 py-4'}>
-            <h1 className={'text-3xl font-extrabold'}>
-                <Link to={'/'}>Attendance Tracker</Link>
-            </h1>
-            <div className={'flex gap-2 justify-center items-center md:hidden'}>
-                <ThemeToggleButton />
-                <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-                    <DropdownMenuTrigger asChild>
-                        <Button className="w-14 h-14" variant="outline">
-                            {isMenuOpen ? (
-                                <X className="w-7! h-7!" />
-                            ) : (
-                                <Menu className="w-7! h-7!" />
-                            )}
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuItem>
-                            <Home />
-                            Dashboard
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <BookOpen />
-                            Subjects
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => navigate('/timetable')}
-                        >
-                            <Calendar />
-                            Timetable
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => navigate('/manualupdate')}
-                        >
-                            <Pen />
-                            Manual Update
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={logoutUser}
-                            variant="destructive"
-                        >
-                            <LogOutIcon />
-                            Log out
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
-            <div
-                className={
-                    'hidden md:flex flex-row justify-center items-center gap-3'
-                }
-            >
-                <Button
-                    className="h-9 px-8 text-xl font-bold flex items-center gap-3"
-                    onClick={() => navigate('/')}
-                    variant={'outline'}
+        <nav className="w-full sticky top-0 bg-card">
+            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                <Link
+                    className={'text-xl text-primary font-extrabold'}
+                    to={'/'}
                 >
-                    Dashboard
-                    <Home className="w-6! h-6!" />
-                </Button>
-                <Button
-                    className="h-9 px-8 text-xl font-bold flex items-center gap-3"
-                    onClick={() => navigate('/subjects')}
-                    variant={'outline'}
+                    Attendance Tracker
+                </Link>
+                <div
+                    className={
+                        'md:hidden flex gap-5 justify-center items-center'
+                    }
                 >
-                    Subjects
-                    <BookOpen className="w-6! h-6!" />
-                </Button>
-                <Button
-                    className="h-9 px-8 text-xl font-bold flex items-center gap-3"
-                    onClick={() => navigate('/timetable')}
-                    variant={'outline'}
-                >
-                    Timetable
-                    <Calendar className="w-6! h-6!" />
-                </Button>
-                <Button
-                    className="h-9 px-8 text-xl font-bold flex items-center gap-3"
-                    onClick={() => navigate('/manualupdate')}
-                    variant={'outline'}
-                >
-                    Manual Update
-                    <Pen className="w-6! h-6!" />
-                </Button>
-            </div>
-            <div className="hidden md:flex justify-center items-center">
-                <div className="flex h-10 px-8 text-xl font-bold items-center gap-3">
                     <ThemeToggleButton />
+                    <DropdownMenu
+                        open={isMenuOpen}
+                        onOpenChange={setIsMenuOpen}
+                    >
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                {isMenuOpen ? <X /> : <Menu />}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem
+                                onClick={() => navigate('/dashboard')}
+                            >
+                                <Home />
+                                Dashboard
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => navigate('/subjects')}
+                            >
+                                <BookOpen />
+                                Subjects
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => navigate('/timetable')}
+                            >
+                                <Calendar />
+                                Timetable
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => navigate('/manualupdate')}
+                            >
+                                <Pen />
+                                Manual Update
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                onClick={logoutUser}
+                                variant="destructive"
+                            >
+                                <LogOutIcon />
+                                Log out
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
-
-                <Button
-                    className="flex h-10 px-8 text-xl font-bold items-center gap-3"
-                    onClick={logoutUser}
-                    variant="destructive"
+                <div
+                    className={
+                        'hidden md:flex flex-row justify-center items-center gap-3'
+                    }
                 >
-                    Logout
-                    <LogOutIcon className="w-7! h-7!" />
-                </Button>
+                    <Button onClick={() => navigate('/')} variant={'ghost'}>
+                        <Home />
+                        Dashboard
+                    </Button>
+                    <Button
+                        onClick={() => navigate('/subjects')}
+                        variant={'ghost'}
+                    >
+                        <BookOpen />
+                        Subjects
+                    </Button>
+                    <Button
+                        onClick={() => navigate('/timetable')}
+                        variant={'ghost'}
+                    >
+                        <Calendar />
+                        Timetable
+                    </Button>
+                    <Button
+                        onClick={() => navigate('/manualupdate')}
+                        variant={'ghost'}
+                    >
+                        <Pen />
+                        Manual Update
+                    </Button>
+                </div>
+                <div className="hidden md:flex gap-1 justify-center items-center">
+                    <ThemeToggleButton />
+                    <Button onClick={logoutUser} variant="destructive">
+                        <LogOutIcon /> Logout
+                    </Button>
+                </div>
             </div>
         </nav>
     );
