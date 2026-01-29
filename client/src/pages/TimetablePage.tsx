@@ -1,9 +1,5 @@
 const TimetablePage = () => {
-    return (
-        <div>
-
-        </div>
-    );
+    return <div></div>;
 };
 
 export default TimetablePage;

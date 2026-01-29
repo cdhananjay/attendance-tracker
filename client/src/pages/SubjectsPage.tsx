@@ -1,9 +1,5 @@
 const SubjectsPage = () => {
-    return (
-        <div>
-
-        </div>
-    );
+    return <div></div>;
 };
 
 export default SubjectsPage;

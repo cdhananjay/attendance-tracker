@@ -1,11 +1,11 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 const DashboardPage = () => {
-    const [subjects, setSubjects] = useState({})
+    const [subjects, setSubjects] = useState({});
     useEffect(() => {
         const getSubjectData = async () => {
             try {
-                const {data} = await axios.get("/api/sub/");
+                const { data } = await axios.get('/api/sub/');
                 if (data.ok) setSubjects(data.subjects);
                 else {
                     alert(data.message);
@@ -13,14 +13,10 @@ const DashboardPage = () => {
             } catch (e) {
                 alert(e);
             }
-        }
+        };
         getSubjectData();
     }, []);
-    return (
-        <div>
-            data : {subjects.toString()}
-        </div>
-    );
+    return <div>data : {subjects.toString()}</div>;
 };
 
 export default DashboardPage;

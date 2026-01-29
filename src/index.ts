@@ -4,7 +4,7 @@ import authRouter from './routes/auth.routes.js';
 import subjectRouter from './routes/subject.routes.js';
 import { drizzle } from 'drizzle-orm/neon-http';
 import path from 'path';
-import {fileURLToPath} from "url";
+import { fileURLToPath } from 'url';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,10 +19,10 @@ app.use('/api/sub', subjectRouter);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 app.listen(port, () => {
