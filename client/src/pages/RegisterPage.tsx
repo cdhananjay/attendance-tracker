@@ -15,6 +15,7 @@ import axios from 'axios';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import { toast } from 'sonner';
 import Footer from '@/components/Footer';
+import { UsersIcon } from 'lucide-react';
 
 const RegisterPage = () => {
     const nav = useNavigate();
@@ -50,10 +51,20 @@ const RegisterPage = () => {
                         'flex gap-5 flex-col justify-center items-center'
                     }
                 >
-                    <img className={'w-30'} src="/vite.svg" alt={'logo'} />
+                    <UsersIcon
+                        className={
+                            'size-40 bg-primary text-white rounded-full p-5'
+                        }
+                    />
                     <h1 className={'text-3xl font-extrabold'}>
                         Attendance Tracker
                     </h1>
+                    <p className={'text-muted-foreground max-w-sm'}>
+                        Disclaimer : Basic features are usable and you can try
+                        them out, but I would not recommend using this app to
+                        track your attendance YET. I might nuke the database in
+                        near future before a final stable release.{' '}
+                    </p>
                 </div>
                 <Card className="w-full max-w-sm">
                     <CardHeader>

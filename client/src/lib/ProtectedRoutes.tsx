@@ -18,7 +18,7 @@ const ProtectedRoutes = () => {
     }, []);
     if (isLoggedIn === null)
         return (
-            <div className={'flex items-center justify-center'}>
+            <div className={'flex pt-72 items-center justify-center'}>
                 {' '}
                 <Spinner />{' '}
             </div>

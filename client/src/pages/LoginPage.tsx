@@ -15,6 +15,7 @@ import axios from 'axios';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import { toast } from 'sonner';
 import Footer from '@/components/Footer';
+import { UsersIcon } from 'lucide-react';
 
 const LoginPage = () => {
     const nav = useNavigate();
@@ -50,7 +51,11 @@ const LoginPage = () => {
                         'flex gap-5 flex-col justify-center items-center'
                     }
                 >
-                    <img className={'w-30'} src="/vite.svg" alt={'logo'} />
+                    <UsersIcon
+                        className={
+                            'size-40 bg-primary text-white rounded-full p-5'
+                        }
+                    />
                     <h1 className={'text-3xl font-extrabold'}>
                         Attendance Tracker
                     </h1>

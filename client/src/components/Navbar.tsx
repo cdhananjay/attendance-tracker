@@ -16,13 +16,34 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import axios from 'axios';
 import { toast } from 'sonner';
-const Navbar = () => {
-    const navigate = useNavigate();
+import { useLocation } from 'react-router-dom';
 
+const Navbar = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(0);
+    useEffect(() => {
+        switch (location.pathname) {
+            case '/':
+                setCurrentPage(0);
+                break;
+            case '/subjects':
+                setCurrentPage(1);
+                break;
+            case '/timetable':
+                setCurrentPage(2);
+                break;
+            case '/manualupdate':
+                setCurrentPage(3);
+                break;
+            default:
+                setCurrentPage(0);
+        }
+    }, [location]);
     async function logoutUser() {
         try {
             const { data } = await axios.post('/api/auth/logout');
@@ -71,24 +92,36 @@ const Navbar = () => {
                         <DropdownMenuContent>
                             <DropdownMenuItem
                                 onClick={() => navigate('/dashboard')}
+                                className={
+                                    currentPage == 0 ? 'bg-accent/20' : ''
+                                }
                             >
                                 <Home />
                                 Dashboard
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => navigate('/subjects')}
+                                className={
+                                    currentPage == 1 ? 'bg-accent/20' : ''
+                                }
                             >
                                 <BookOpen />
                                 Subjects
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => navigate('/timetable')}
+                                className={
+                                    currentPage == 2 ? 'bg-accent/20' : ''
+                                }
                             >
                                 <Calendar />
                                 Timetable
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => navigate('/manualupdate')}
+                                className={
+                                    currentPage == 3 ? 'bg-accent/20' : ''
+                                }
                             >
                                 <Pen />
                                 Manual Update
@@ -109,13 +142,18 @@ const Navbar = () => {
                         'hidden md:flex flex-row justify-center items-center gap-3'
                     }
                 >
-                    <Button onClick={() => navigate('/')} variant={'ghost'}>
+                    <Button
+                        onClick={() => navigate('/')}
+                        variant={'ghost'}
+                        className={currentPage == 0 ? 'bg-accent/20' : ''}
+                    >
                         <Home />
                         Dashboard
                     </Button>
                     <Button
                         onClick={() => navigate('/subjects')}
                         variant={'ghost'}
+                        className={currentPage == 1 ? 'bg-accent/20' : ''}
                     >
                         <BookOpen />
                         Subjects
@@ -123,6 +161,7 @@ const Navbar = () => {
                     <Button
                         onClick={() => navigate('/timetable')}
                         variant={'ghost'}
+                        className={currentPage == 2 ? 'bg-accent/20' : ''}
                     >
                         <Calendar />
                         Timetable
@@ -130,6 +169,7 @@ const Navbar = () => {
                     <Button
                         onClick={() => navigate('/manualupdate')}
                         variant={'ghost'}
+                        className={currentPage == 3 ? 'bg-accent/20' : ''}
                     >
                         <Pen />
                         Manual Update

@@ -20,12 +20,12 @@ const SubjectOverviewCard = ({
     classesAttended,
 }: props) => {
     return (
-        <Card>
+        <Card className={'gap-0'}>
             <CardHeader>
                 <CardTitle className={'text-lg'}>{name}</CardTitle>
                 <CardAction>
                     {totalClasses &&
-                    (classesAttended / totalClasses) * 100 < 75 ? (
+                    Math.floor((classesAttended / totalClasses) * 100) < 75 ? (
                         <TriangleAlertIcon className={'stroke-red-500'} />
                     ) : (
                         <></>
@@ -33,9 +33,10 @@ const SubjectOverviewCard = ({
                 </CardAction>
             </CardHeader>
             <CardContent>
-                <div className={'mb-1 flex justify-between items-baseline'}>
+                <div className={'flex justify-between items-baseline'}>
                     <p className={'text-xl'}>
-                        {totalClasses && (classesAttended / totalClasses) * 100}
+                        {totalClasses &&
+                            Math.floor((classesAttended / totalClasses) * 100)}
                         %
                     </p>
                     <p
@@ -45,19 +46,19 @@ const SubjectOverviewCard = ({
                 <Progress
                     progressColor={
                         totalClasses &&
-                        (classesAttended / totalClasses) * 100 >= 75
+                        Math.floor((classesAttended / totalClasses) * 100) >= 75
                             ? 'bg-green-500'
                             : 'bg-red-500'
                     }
                     className={
                         totalClasses &&
-                        (classesAttended / totalClasses) * 100 >= 75
+                        Math.floor((classesAttended / totalClasses) * 100) >= 75
                             ? 'bg-green-500/50'
                             : 'bg-red-500/50'
                     }
                     value={
                         totalClasses > 0
-                            ? (classesAttended / totalClasses) * 100
+                            ? Math.floor((classesAttended / totalClasses) * 100)
                             : 0
                     }
                 />

@@ -1,5 +1,5 @@
 const ManualUpdatePage = () => {
-    return <div></div>;
+    return <div>to be updated</div>;
 };
 
 export default ManualUpdatePage;

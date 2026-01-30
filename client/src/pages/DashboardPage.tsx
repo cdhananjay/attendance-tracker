@@ -23,66 +23,102 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '@/components/ui/spinner';
 
+type subject = {
+    name: string;
+    classesAttended: number;
+    totalClasses: number;
+    occurrence: number[];
+};
+
 const DashboardPage = () => {
     const navigate = useNavigate();
-    const [subjects, setSubjects] = useState<
-        {
-            name: string;
-            classesAttended: number;
-            totalClasses: number;
-            occurrence: number[];
-        }[]
-    >([]);
+    const [subjects, setSubjects] = useState<subject[]>([]);
     const [loading, setLoading] = useState(true);
-    const [_, setClassesToday] = useState([]);
+    const [classesToday, setClassesToday] = useState<subject[]>([]);
     const [classesAttended, setClassesAttended] = useState(0);
     const [totalClasses, setTotalClasses] = useState(0);
     const [classesTodayString, setClassesTodayString] = useState('');
-
-    useEffect(() => {
-        const getSubjectData = async () => {
-            try {
-                const { data } = await axios.get('/api/sub/');
-                if (data.ok) {
-                    setSubjects(data.subjects);
-                    let classesString = '';
-                    let attended = 0;
-                    let total = 0;
-                    let classes: typeof data.subjects = [];
-                    for (const sub of data.subjects) {
-                        for (
-                            let i = 0;
-                            i < sub.occurrence[new Date().getDay()];
-                            i++
-                        )
-                            classes.push(sub);
-                        if (sub.occurrence[new Date().getDay()] >= 1)
-                            classesString = classesString + ' ' + sub.name;
-                        if (sub.occurrence[new Date().getDay()] > 1)
-                            classesString =
-                                classesString +
-                                `_x${sub.occurrence[new Date().getDay()]}`;
-                        attended += sub.classesAttended;
-                        total += sub.totalClasses;
-                    }
-                    setClassesTodayString(classesString);
-                    setClassesToday(classes);
-                    setClassesAttended(attended);
-                    setTotalClasses(total);
+    const getSubjectData = async () => {
+        try {
+            const { data } = await axios.get('/api/sub/');
+            if (data.ok) {
+                setSubjects(data.subjects);
+                let classesString = '';
+                let attended = 0;
+                let total = 0;
+                let classes: typeof data.subjects = [];
+                for (const sub of data.subjects) {
+                    for (
+                        let i = 0;
+                        i < sub.occurrence[new Date().getDay()];
+                        i++
+                    )
+                        classes.push(sub);
+                    if (sub.occurrence[new Date().getDay()] >= 1)
+                        classesString = classesString + ' ' + sub.name;
+                    if (sub.occurrence[new Date().getDay()] > 1)
+                        classesString =
+                            classesString +
+                            `_x${sub.occurrence[new Date().getDay()]}`;
+                    attended += sub.classesAttended;
+                    total += sub.totalClasses;
                 }
-            } catch (e) {
-                toast.error('Internal Server Error');
-                console.log(e);
-            } finally {
-                setLoading(false);
+                setClassesTodayString(classesString);
+                setClassesToday(classes);
+                setClassesAttended(attended);
+                setTotalClasses(total);
             }
-        };
+        } catch (e) {
+            toast.error('Internal Server Error', {
+                position: 'top-center',
+            });
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
         getSubjectData();
     }, []);
-
+    async function markAll(present: boolean) {
+        setLoading(true);
+        try {
+            for (const sub of classesToday) {
+                sub.totalClasses++;
+                if (present) sub.classesAttended++;
+                const { data } = await axios.patch('/api/sub', {
+                    subjectName: sub.name,
+                    newTotalClasses: sub.totalClasses,
+                    newClassesAttended: sub.classesAttended,
+                });
+                if (data.ok)
+                    toast.success(
+                        `${sub.name} marked ${present ? 'present' : 'absent'}`,
+                        {
+                            position: 'top-center',
+                        }
+                    );
+                else
+                    toast.error(
+                        ` error marking ${present ? 'present' : 'absent'} for ${sub.name} : ${data.message}`,
+                        {
+                            position: 'top-center',
+                        }
+                    );
+            }
+        } catch (e) {
+            toast.error('internal server error', {
+                position: 'top-center',
+            });
+            console.log(e);
+        } finally {
+            setLoading(false);
+            await getSubjectData();
+        }
+    }
     if (loading)
         return (
-            <div className="flex flex-1 justify-center items-center">
+            <div className="flex pt-56 flex-1 justify-center items-center">
                 <Spinner />
             </div>
         );
@@ -97,18 +133,30 @@ const DashboardPage = () => {
                     <h2 className={'text-2xl font-bold mb-3'}>Quick Actions</h2>
                     <div
                         className={
-                            'flex flex-col md:flex-row justify-start md:justify-between gap-2 flex-nowrap md:items-center'
+                            'flex flex-col justify-start gap-2 flex-nowrap'
                         }
                     >
+                        <p>
+                            <span className={'font-bold'}>Classes today:</span>{' '}
+                            {classesToday ? classesTodayString : 'none'}{' '}
+                        </p>
                         <div
                             className={
                                 'flex flex-row gap-2 items-center justify-start flex-wrap'
                             }
                         >
-                            <Button variant={'outline'}>
+                            <Button
+                                onClick={async () => await markAll(true)}
+                                variant={'outline'}
+                            >
                                 Mark all present
                             </Button>
-                            <Button variant={'outline'}>Mark all absent</Button>
+                            <Button
+                                onClick={async () => await markAll(false)}
+                                variant={'outline'}
+                            >
+                                Mark all absent
+                            </Button>
                             <Button
                                 onClick={() => navigate('/subjects')}
                                 variant={'outline'}
@@ -116,10 +164,6 @@ const DashboardPage = () => {
                                 Mark custom
                             </Button>
                         </div>
-                        <p>
-                            <span className={'font-bold'}>Classes today:</span>{' '}
-                            {classesTodayString}{' '}
-                        </p>
                     </div>
                 </section>
                 <section className={'my-5'}>
@@ -128,7 +172,9 @@ const DashboardPage = () => {
                             <CardTitle>Overall Attendance</CardTitle>
                             <CardAction>
                                 {totalClasses &&
-                                (classesAttended / totalClasses) * 100 >= 75 ? (
+                                Math.floor(
+                                    (classesAttended / totalClasses) * 100
+                                ) >= 75 ? (
                                     <TrendingUpIcon
                                         className={'stroke-green-500'}
                                     />
@@ -142,7 +188,9 @@ const DashboardPage = () => {
                         <CardContent>
                             <p className={'text-5xl font-extrabold'}>
                                 {totalClasses
-                                    ? (classesAttended / totalClasses) * 100
+                                    ? Math.floor(
+                                          (classesAttended / totalClasses) * 100
+                                      )
                                     : 0}
                                 %
                             </p>
@@ -151,19 +199,26 @@ const DashboardPage = () => {
                             <Progress
                                 progressColor={
                                     totalClasses &&
-                                    (classesAttended / totalClasses) * 100 >= 75
+                                    Math.floor(
+                                        (classesAttended / totalClasses) * 100
+                                    ) >= 75
                                         ? 'bg-green-500'
                                         : 'bg-red-500'
                                 }
                                 className={
                                     totalClasses &&
-                                    (classesAttended / totalClasses) * 100 >= 75
+                                    Math.floor(
+                                        (classesAttended / totalClasses) * 100
+                                    ) >= 75
                                         ? 'bg-green-500/50'
                                         : 'bg-red-500/50'
                                 }
                                 value={
                                     totalClasses > 0
-                                        ? (classesAttended / totalClasses) * 100
+                                        ? Math.floor(
+                                              (classesAttended / totalClasses) *
+                                                  100
+                                          )
                                         : 0
                                 }
                             />
