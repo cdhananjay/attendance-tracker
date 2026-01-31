@@ -38,7 +38,7 @@ const SubjectsPage = () => {
             if (data.ok) setSubjects(data.subjects);
         } catch (e) {
             toast.error('Internal Server Error', {
-                position: 'top-center',
+                position: 'bottom-center',
             });
             console.log(e);
         } finally {
@@ -49,26 +49,51 @@ const SubjectsPage = () => {
         getSubjectData();
     }, []);
 
-    async function createSubject(
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) {
+    async function createSubject(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
         setDisplayCard(false);
         try {
             const { data } = await axios.post('/api/sub', { subjectName });
             if (data.ok) {
                 toast.success('subject created', {
-                    position: 'top-center',
+                    position: 'bottom-center',
                 });
                 setLoading(true);
                 return getSubjectData();
             } else
                 toast.error(data.message, {
-                    position: 'top-center',
+                    position: 'bottom-center',
                 });
         } catch (e) {
             toast.error('internal server error', {
-                position: 'top-center',
+                position: 'bottom-center',
+            });
+            console.log(e);
+        }
+    }
+
+    async function deleteSubject(name: string) {
+        try {
+            const { data } = await axios.delete('/api/sub', {
+                data: {
+                    subjectName: name,
+                },
+            });
+
+            if (data.ok) {
+                toast.success(`${name} deleted`, {
+                    position: 'bottom-center',
+                });
+
+                setSubjects((prev) => prev.filter((sub) => sub.name !== name));
+            } else {
+                toast.error(data.message, {
+                    position: 'bottom-center',
+                });
+            }
+        } catch (e) {
+            toast.error('Internal server error', {
+                position: 'bottom-center',
             });
             console.log(e);
         }
@@ -76,7 +101,7 @@ const SubjectsPage = () => {
 
     if (loading)
         return (
-            <div className="flex pt-56 flex-1 justify-center items-center">
+            <div className='flex pt-56 flex-1 justify-center items-center'>
                 <Spinner />
             </div>
         );
@@ -85,50 +110,38 @@ const SubjectsPage = () => {
             <>
                 <div className={'flex justify-between items-center '}>
                     <div>
-                        <h1 className={'text-3xl font-extrabold'}>
-                            All Subjects
-                        </h1>
+                        <h1 className={'text-3xl font-extrabold'}>All Subjects</h1>
                         <p className={'text-muted-foreground'}>
-                            Mark attendance and view details for specific
-                            subjects.
+                            Mark attendance and view details for specific subjects.
                         </p>
                     </div>
                     <Dialog>
                         <form>
                             <DialogTrigger asChild>
-                                <Button variant="default">
+                                <Button variant='default'>
                                     {' '}
                                     <PlusIcon /> Create Subject
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-sm">
+                            <DialogContent className='sm:max-w-sm'>
                                 <DialogHeader>
-                                    <DialogTitle>
-                                        Create New Subject
-                                    </DialogTitle>
+                                    <DialogTitle>Create New Subject</DialogTitle>
                                 </DialogHeader>
                                 <FieldGroup>
                                     <Field>
-                                        <Label htmlFor="name-1">Name</Label>
+                                        <Label htmlFor='name-1'>Name</Label>
                                         <Input
-                                            onChange={(e) =>
-                                                setSubjectName(e.target.value)
-                                            }
-                                            id="name-1"
-                                            name="name"
+                                            onChange={(e) => setSubjectName(e.target.value)}
+                                            id='name-1'
+                                            name='name'
                                         />
                                     </Field>
                                 </FieldGroup>
                                 <DialogFooter>
                                     <DialogClose asChild>
-                                        <Button variant="outline">
-                                            Cancel
-                                        </Button>
+                                        <Button variant='outline'>Cancel</Button>
                                     </DialogClose>
-                                    <Button
-                                        onClick={(e) => createSubject(e)}
-                                        type="submit"
-                                    >
+                                    <Button onClick={(e) => createSubject(e)} type='submit'>
                                         Save changes
                                     </Button>
                                 </DialogFooter>
@@ -136,42 +149,34 @@ const SubjectsPage = () => {
                         </form>
                     </Dialog>
                     {displayCard && (
-                        <Card className="fixed md:absolute top-1/2 md:top-full left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 right-auto md:right-0 mt-0 md:mt-2 w-full max-w-sm z-50 shadow-lg">
+                        <Card className='fixed md:absolute top-1/2 md:top-full left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 right-auto md:right-0 mt-0 md:mt-2 w-full max-w-sm z-50 shadow-lg'>
                             <CardContent>
                                 <form>
-                                    <div className="flex flex-col gap-6">
-                                        <div className="grid gap-2">
-                                            <Label htmlFor="subjectName">
-                                                Subject Name
-                                            </Label>
+                                    <div className='flex flex-col gap-6'>
+                                        <div className='grid gap-2'>
+                                            <Label htmlFor='subjectName'>Subject Name</Label>
                                             <Input
-                                                onChange={(e) =>
-                                                    setSubjectName(
-                                                        e.target.value
-                                                    )
-                                                }
-                                                id="subjectName"
-                                                type="text"
+                                                onChange={(e) => setSubjectName(e.target.value)}
+                                                id='subjectName'
+                                                type='text'
                                                 required
                                             />
                                         </div>
                                     </div>
                                 </form>
                             </CardContent>
-                            <CardFooter className="flex-col gap-2">
+                            <CardFooter className='flex-col gap-2'>
                                 <Button
-                                    onClick={async (e) =>
-                                        await createSubject(e)
-                                    }
-                                    type="submit"
-                                    className="w-full"
+                                    onClick={async (e) => await createSubject(e)}
+                                    type='submit'
+                                    className='w-full'
                                 >
                                     <PlusIcon /> Create Subject
                                 </Button>
                                 <Button
                                     onClick={() => setDisplayCard(false)}
-                                    variant="outline"
-                                    className="w-full"
+                                    variant='outline'
+                                    className='w-full'
                                 >
                                     <XIcon /> Cancel
                                 </Button>
@@ -179,13 +184,13 @@ const SubjectsPage = () => {
                         </Card>
                     )}
                 </div>
-                <div
-                    className={
-                        'my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'
-                    }
-                >
+                <div className={'my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'}>
                     {subjects.map((sub) => (
-                        <SubjectAttendanceCard key={sub.name} name={sub.name} />
+                        <SubjectAttendanceCard
+                            key={sub.name}
+                            name={sub.name}
+                            onDelete={deleteSubject}
+                        />
                     ))}
                 </div>
             </>

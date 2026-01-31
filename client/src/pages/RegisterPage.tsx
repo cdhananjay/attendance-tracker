@@ -29,95 +29,70 @@ const RegisterPage = () => {
                 password,
             });
             if (data.ok) return nav('/');
-            toast.error(data.message, { position: 'top-center' });
+            toast.error(data.message, { position: 'bottom-center' });
             nav('/');
         } catch (e) {
-            toast.error('Internal server error.', { position: 'top-center' });
+            toast.error('Internal server error.', {
+                position: 'bottom-center',
+            });
             console.log(e);
         }
     }
     return (
-        <div
-            className={'flex justify-center items-center flex-col min-h-screen'}
-        >
-            <main
-                className={'flex flex-col justify-center items-center gap-10'}
-            >
-                <div className="fixed top-4 right-4">
+        <div className={'flex justify-center items-center flex-col min-h-screen'}>
+            <main className={'flex flex-col justify-center items-center gap-10'}>
+                <div className='fixed top-4 right-4'>
                     <ThemeToggleButton />
                 </div>
-                <div
-                    className={
-                        'flex gap-5 flex-col justify-center items-center'
-                    }
-                >
-                    <UsersIcon
-                        className={
-                            'size-40 bg-primary text-white rounded-full p-5'
-                        }
-                    />
-                    <h1 className={'text-3xl font-extrabold'}>
-                        Attendance Tracker
-                    </h1>
+                <div className={'flex gap-5 flex-col justify-center items-center'}>
+                    <UsersIcon className={'size-40 bg-primary text-white rounded-full p-5'} />
+                    <h1 className={'text-3xl font-extrabold'}>Attendance Tracker</h1>
                     <p className={'text-muted-foreground max-w-sm'}>
-                        Disclaimer : Basic features are usable and you can try
-                        them out, but I would not recommend using this app to
-                        track your attendance YET. I might nuke the database in
-                        near future before a final stable release.{' '}
+                        Disclaimer : Basic features are usable and you can try them out, but I would
+                        not recommend using this app to track your attendance YET. I might nuke the
+                        database in near future before a final stable release.{' '}
                     </p>
                 </div>
-                <Card className="w-full max-w-sm">
+                <Card className='w-full max-w-sm'>
                     <CardHeader>
                         <CardTitle>Register your account</CardTitle>
-                        <CardDescription>
-                            Enter your unique username.
-                        </CardDescription>
+                        <CardDescription>Enter your unique username.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <form>
-                            <div className="flex flex-col gap-6">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="username">Username</Label>
+                            <div className='flex flex-col gap-6'>
+                                <div className='grid gap-2'>
+                                    <Label htmlFor='username'>Username</Label>
                                     <Input
-                                        onChange={(e) =>
-                                            setUsername(e.target.value)
-                                        }
-                                        id="username"
-                                        type="text"
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        id='username'
+                                        type='text'
                                         required
                                     />
                                 </div>
-                                <div className="grid gap-2">
-                                    <div className="flex items-center">
-                                        <Label htmlFor="password">
-                                            Password
-                                        </Label>
+                                <div className='grid gap-2'>
+                                    <div className='flex items-center'>
+                                        <Label htmlFor='password'>Password</Label>
                                     </div>
                                     <Input
-                                        onChange={(e) =>
-                                            setPassword(e.target.value)
-                                        }
-                                        id="password"
-                                        type="password"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        id='password'
+                                        type='password'
                                         required
                                     />
                                 </div>
                             </div>
                         </form>
                     </CardContent>
-                    <CardFooter className="flex-col gap-2">
-                        <Button
-                            onClick={(e) => submitForm(e)}
-                            type="submit"
-                            className="w-full"
-                        >
+                    <CardFooter className='flex-col gap-2'>
+                        <Button onClick={(e) => submitForm(e)} type='submit' className='w-full'>
                             Register
                         </Button>
                         <p className={'flex text-sm gap-1 items-center'}>
                             Already Registered?
                             <Link
-                                to="/login"
-                                className="text-primary inline-block text-sm underline-offset-4 hover:underline"
+                                to='/login'
+                                className='text-primary inline-block text-sm underline-offset-4 hover:underline'
                             >
                                 Login Instead
                             </Link>

@@ -9,7 +9,7 @@ export function ThemeToggleButton() {
         else setTheme('dark');
     }
     return (
-        <Button onClick={() => toggleTheme()} variant="outline" size="icon">
+        <Button onClick={() => toggleTheme()} variant='outline' size='icon'>
             {theme == 'dark' && (
                 <Moon
                     className={
@@ -18,9 +18,9 @@ export function ThemeToggleButton() {
                 />
             )}
             {theme == 'light' && (
-                <Sun className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <Sun className='scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
             )}
-            <span className="sr-only">Toggle theme</span>
+            <span className='sr-only'>Toggle theme</span>
         </Button>
     );
 }

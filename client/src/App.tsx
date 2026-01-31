@@ -18,14 +18,8 @@ function App() {
                     <Route element={<Layout />}>
                         <Route path={'/'} element={<DashboardPage />} />
                         <Route path={'/subjects'} element={<SubjectsPage />} />
-                        <Route
-                            path={'/timetable'}
-                            element={<TimetablePage />}
-                        />
-                        <Route
-                            path={'/manualupdate'}
-                            element={<ManualUpdatePage />}
-                        />
+                        <Route path={'/timetable'} element={<TimetablePage />} />
+                        <Route path={'/manualupdate'} element={<ManualUpdatePage />} />
                     </Route>
                 </Route>
             </Routes>

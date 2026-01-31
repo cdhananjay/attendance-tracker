@@ -29,38 +29,26 @@ const LoginPage = () => {
                 password,
             });
             if (data.ok) return nav('/');
-            toast.error(data.message, { position: 'top-center' });
+            toast.error(data.message, { position: 'bottom-center' });
             nav('/');
         } catch (e) {
-            toast.error('Internal server error.', { position: 'top-center' });
+            toast.error('Internal server error.', {
+                position: 'bottom-center',
+            });
             console.log(e);
         }
     }
     return (
-        <div
-            className={'flex flex-col items-center justify-center min-h-screen'}
-        >
-            <main
-                className={'flex flex-col justify-center items-center gap-10'}
-            >
-                <div className="fixed top-4 right-4">
+        <div className={'flex flex-col items-center justify-center min-h-screen'}>
+            <main className={'flex flex-col justify-center items-center gap-10'}>
+                <div className='fixed top-4 right-4'>
                     <ThemeToggleButton />
                 </div>
-                <div
-                    className={
-                        'flex gap-5 flex-col justify-center items-center'
-                    }
-                >
-                    <UsersIcon
-                        className={
-                            'size-40 bg-primary text-white rounded-full p-5'
-                        }
-                    />
-                    <h1 className={'text-3xl font-extrabold'}>
-                        Attendance Tracker
-                    </h1>
+                <div className={'flex gap-5 flex-col justify-center items-center'}>
+                    <UsersIcon className={'size-40 bg-primary text-white rounded-full p-5'} />
+                    <h1 className={'text-3xl font-extrabold'}>Attendance Tracker</h1>
                 </div>
-                <Card className="w-full max-w-sm">
+                <Card className='w-full max-w-sm'>
                     <CardHeader>
                         <CardTitle>Login to your account</CardTitle>
                         <CardDescription>
@@ -69,49 +57,39 @@ const LoginPage = () => {
                     </CardHeader>
                     <CardContent>
                         <form>
-                            <div className="flex flex-col gap-6">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="username">Username</Label>
+                            <div className='flex flex-col gap-6'>
+                                <div className='grid gap-2'>
+                                    <Label htmlFor='username'>Username</Label>
                                     <Input
-                                        onChange={(e) =>
-                                            setUsername(e.target.value)
-                                        }
-                                        id="username"
-                                        type="text"
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        id='username'
+                                        type='text'
                                         required
                                     />
                                 </div>
-                                <div className="grid gap-2">
-                                    <div className="flex items-center">
-                                        <Label htmlFor="password">
-                                            Password
-                                        </Label>
+                                <div className='grid gap-2'>
+                                    <div className='flex items-center'>
+                                        <Label htmlFor='password'>Password</Label>
                                     </div>
                                     <Input
-                                        onChange={(e) =>
-                                            setPassword(e.target.value)
-                                        }
-                                        id="password"
-                                        type="password"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        id='password'
+                                        type='password'
                                         required
                                     />
                                 </div>
                             </div>
                         </form>
                     </CardContent>
-                    <CardFooter className="flex-col gap-2">
-                        <Button
-                            onClick={(e) => submitForm(e)}
-                            type="submit"
-                            className="w-full"
-                        >
+                    <CardFooter className='flex-col gap-2'>
+                        <Button onClick={(e) => submitForm(e)} type='submit' className='w-full'>
                             Login
                         </Button>
                         <p className={'flex text-sm gap-1 items-center'}>
                             New User?
                             <Link
-                                to="/register"
-                                className="text-primary inline-block text-sm underline-offset-4 hover:underline"
+                                to='/register'
+                                className='text-primary inline-block text-sm underline-offset-4 hover:underline'
                             >
                                 Register Instead
                             </Link>

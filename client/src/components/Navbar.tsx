@@ -1,12 +1,4 @@
-import {
-    LogOutIcon,
-    BookOpen,
-    Calendar,
-    Home,
-    Menu,
-    Pen,
-    X,
-} from 'lucide-react';
+import { LogOutIcon, BookOpen, Calendar, Home, Menu, Pen, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -49,16 +41,16 @@ const Navbar = () => {
             const { data } = await axios.post('/api/auth/logout');
             if (data.ok)
                 toast.success('logged out', {
-                    position: 'top-center',
+                    position: 'bottom-center',
                 });
             else
                 toast.error(data.message, {
-                    position: 'top-center',
+                    position: 'bottom-center',
                 });
             navigate('/login', { replace: true });
         } catch (e) {
             toast.error('Internal server error', {
-                position: 'top-center',
+                position: 'bottom-center',
             });
             console.log(e);
         }
@@ -66,82 +58,55 @@ const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className="w-full sticky top-0 bg-card">
-            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-                <Link
-                    className={'text-xl text-primary font-extrabold'}
-                    to={'/'}
-                >
+        <nav className='w-full sticky top-0 bg-card'>
+            <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
+                <Link className={'text-xl text-primary font-extrabold'} to={'/'}>
                     Attendance Tracker
                 </Link>
-                <div
-                    className={
-                        'md:hidden flex gap-5 justify-center items-center'
-                    }
-                >
+                <div className={'md:hidden flex gap-5 justify-center items-center'}>
                     <ThemeToggleButton />
-                    <DropdownMenu
-                        open={isMenuOpen}
-                        onOpenChange={setIsMenuOpen}
-                    >
+                    <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline">
-                                {isMenuOpen ? <X /> : <Menu />}
-                            </Button>
+                            <Button variant='outline'>{isMenuOpen ? <X /> : <Menu />}</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuItem
                                 onClick={() => navigate('/')}
-                                className={
-                                    currentPage == 0 ? 'bg-accent/20' : ''
-                                }
+                                className={currentPage == 0 ? 'bg-accent/20' : ''}
                             >
                                 <Home />
                                 Dashboard
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => navigate('/subjects')}
-                                className={
-                                    currentPage == 1 ? 'bg-accent/20' : ''
-                                }
+                                className={currentPage == 1 ? 'bg-accent/20' : ''}
                             >
                                 <BookOpen />
                                 Subjects
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => navigate('/timetable')}
-                                className={
-                                    currentPage == 2 ? 'bg-accent/20' : ''
-                                }
+                                className={currentPage == 2 ? 'bg-accent/20' : ''}
                             >
                                 <Calendar />
                                 Timetable
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => navigate('/manualupdate')}
-                                className={
-                                    currentPage == 3 ? 'bg-accent/20' : ''
-                                }
+                                className={currentPage == 3 ? 'bg-accent/20' : ''}
                             >
                                 <Pen />
                                 Manual Update
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onClick={logoutUser}
-                                variant="destructive"
-                            >
+                            <DropdownMenuItem onClick={logoutUser} variant='destructive'>
                                 <LogOutIcon />
                                 Log out
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <div
-                    className={
-                        'hidden md:flex flex-row justify-center items-center gap-3'
-                    }
-                >
+                <div className={'hidden md:flex flex-row justify-center items-center gap-3'}>
                     <Button
                         onClick={() => navigate('/')}
                         variant={'ghost'}
@@ -175,9 +140,9 @@ const Navbar = () => {
                         Manual Update
                     </Button>
                 </div>
-                <div className="hidden md:flex gap-1 justify-center items-center">
+                <div className='hidden md:flex gap-3 justify-center items-center'>
                     <ThemeToggleButton />
-                    <Button onClick={logoutUser} variant="destructive">
+                    <Button onClick={logoutUser} variant='destructive'>
                         <LogOutIcon /> Logout
                     </Button>
                 </div>

@@ -23,6 +23,6 @@ const ProtectedRoutes = () => {
                 <Spinner />{' '}
             </div>
         );
-    return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+    return isLoggedIn ? <Outlet /> : <Navigate to='/login' />;
 };
 export default ProtectedRoutes;

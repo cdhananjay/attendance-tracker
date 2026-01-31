@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
-        <footer className="w-full bg-card mt-4">
-            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-center gap-5 items-center text-muted-foreground">
+        <footer className='w-full bg-card mt-4'>
+            <div className='max-w-7xl mx-auto px-4 py-4 flex justify-center gap-5 items-center text-muted-foreground'>
                 <Link
                     target={'_blank'}
                     to={'https://dhananjayc.vercel.app/'}

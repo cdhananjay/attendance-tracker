@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 type props = {
     name: string;
+    onDelete: (name: string) => void;
 };
 
 type subjectT = {
@@ -26,7 +27,7 @@ type subjectT = {
     occurrence: number[];
 };
 
-const SubjectOverviewCard = ({ name }: props) => {
+const SubjectOverviewCard = ({ name, onDelete }: props) => {
     const [loading, setLoading] = useState(true);
     const [subject, setSubject] = useState<subjectT | undefined>(undefined);
 
@@ -48,42 +49,16 @@ const SubjectOverviewCard = ({ name }: props) => {
                 }
             } else {
                 toast.error(data.message, {
-                    position: 'top-center',
+                    position: 'bottom-center',
                 });
             }
         } catch (e) {
             toast.error('internal server error', {
-                position: 'top-center',
+                position: 'bottom-center',
             });
             console.log(e);
         } finally {
             setLoading(false);
-        }
-    }
-    async function deleteSubject() {
-        setLoading(true);
-        try {
-            const { data } = await axios.delete('/api/sub', {
-                data: {
-                    subjectName: name,
-                },
-            });
-            if (data.ok) {
-                toast.success(`${name} deleted`, {
-                    position: 'top-center',
-                });
-            } else
-                toast.error(`error deleting ${name}: ${data.message}`, {
-                    position: 'top-center',
-                });
-        } catch (e) {
-            toast.error(`internal server error`, {
-                position: 'top-center',
-            });
-            console.log(e);
-        } finally {
-            setLoading(false);
-            navigate(0);
         }
     }
 
@@ -92,7 +67,7 @@ const SubjectOverviewCard = ({ name }: props) => {
         try {
             if (!subject)
                 return toast.error('subject name required', {
-                    position: 'top-center',
+                    position: 'bottom-center',
                 });
             const newTotalClasses = subject.totalClasses + 1;
             const newClassesAttended = present
@@ -105,7 +80,7 @@ const SubjectOverviewCard = ({ name }: props) => {
             });
             if (data.ok) {
                 toast.success(`attendance updated`, {
-                    position: 'top-center',
+                    position: 'bottom-center',
                 });
                 setSubject({
                     ...subject,
@@ -113,11 +88,13 @@ const SubjectOverviewCard = ({ name }: props) => {
                     classesAttended: newClassesAttended,
                 });
             } else {
-                toast.error(data.message);
+                toast.error(data.message, {
+                    position: 'bottom-center',
+                });
             }
         } catch (e) {
             toast.error('internal server error', {
-                position: 'top-center',
+                position: 'bottom-center',
             });
             console.log(e);
         } finally {
@@ -136,10 +113,7 @@ const SubjectOverviewCard = ({ name }: props) => {
         );
 
     const { classesAttended, totalClasses } = subject;
-    const percentage =
-        totalClasses > 0
-            ? Math.floor((classesAttended / totalClasses) * 100)
-            : 0;
+    const percentage = totalClasses > 0 ? Math.floor((classesAttended / totalClasses) * 100) : 0;
 
     return (
         <Card>
@@ -161,32 +135,19 @@ const SubjectOverviewCard = ({ name }: props) => {
                     >{`Attended: ${classesAttended}/${totalClasses}`}</p>
                 </div>
                 <Progress
-                    progressColor={
-                        percentage >= 75 ? 'bg-green-500' : 'bg-red-500'
-                    }
-                    className={
-                        percentage >= 75 ? 'bg-green-500/50' : 'bg-red-500/50'
-                    }
+                    progressColor={percentage >= 75 ? 'bg-green-500' : 'bg-red-500'}
+                    className={percentage >= 75 ? 'bg-green-500/50' : 'bg-red-500/50'}
                     value={percentage}
                 />
             </CardContent>
             <CardFooter className={'gap-3 flex-wrap'}>
-                <Button
-                    onClick={async () => await addAttendance(true)}
-                    variant={'outline'}
-                >
+                <Button onClick={async () => await addAttendance(true)} variant={'outline'}>
                     Mark Present
                 </Button>
-                <Button
-                    onClick={async () => await addAttendance(false)}
-                    variant={'outline'}
-                >
+                <Button onClick={async () => await addAttendance(false)} variant={'outline'}>
                     Mark Absent
                 </Button>
-                <Button
-                    onClick={async () => await deleteSubject()}
-                    variant={'destructive'}
-                >
+                <Button onClick={() => onDelete(name)} variant='destructive'>
                     Delete
                 </Button>
             </CardFooter>
