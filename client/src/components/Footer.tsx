@@ -13,7 +13,7 @@ const Footer = () => {
                 </Link>
                 <Link
                     target={'_blank'}
-                    to={'https://github.com/cdhananjay/attendance-tracker'}
+                    to={'https://github.com/cdhananjay/75orDie'}
                     className={'underline hover:no-underline'}
                 >
                     github repo
